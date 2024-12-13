@@ -106,3 +106,25 @@ def impute_intermediate_level2(level2_matrix: np.ndarray, level2_ordered: list):
             dim2_indices.remove(dim2_idx)
 
     return level2_ordered_imputed
+
+
+def get_larger_polygon_index(data):
+    num_polygons = len(data["features"][0]["geometry"]["coordinates"])
+
+    larger_polygon_idx = None
+    max_points = 0
+    for i in range(num_polygons):
+        n_pts = len(data["features"][0]["geometry"]["coordinates"][i][0])
+        if n_pts > max_points:
+            larger_polygon_idx = i
+            max_points = n_pts
+
+    return larger_polygon_idx
+
+
+def include_all_coordinates(data):
+    num_polygons = len(data["features"][0]["geometry"]["coordinates"])
+    all_coordinates = [[]]
+    for i in range(num_polygons):
+        all_coordinates[0].extend(data["features"][0]["geometry"]["coordinates"][i][0])
+    return all_coordinates
