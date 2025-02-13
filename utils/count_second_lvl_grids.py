@@ -1,4 +1,5 @@
 from utils import utils
+import json
 
 
 def entry(ordered: list, plus_codes: list):
@@ -13,8 +14,11 @@ def entry(ordered: list, plus_codes: list):
     level2_ordered_imputed = utils.impute_intermediate_level2(
         level2_matrix, level2_ordered
     )
+    n_codes = len(str(len(level2_ordered_imputed)))
 
-    return {
-        (idx + 1): {"left_top": pc + "X2X2+X2", "right_button": pc + "2X2X+2X"}
-        for idx, pc in enumerate(level2_ordered_imputed)
-    }
+    return json.dumps(
+        {
+            f"{'0'*(n_codes - n_char) if (n_char:=len(str(idx+1))) else ''}{(idx + 1)}": pc
+            for idx, pc in enumerate(level2_ordered_imputed)
+        }
+    )
